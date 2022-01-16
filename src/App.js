@@ -1,24 +1,70 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Navbar from "./components/Navbar";
+import TextForm from "./components/TextForm";
+import { useState } from "react";
+import Alert from "./components/Alert";
 
 function App() {
+  const togglemode = () => {
+    if (mode === "light") {
+      setmode("dark");
+      document.body.style.backgroundColor = "SlateBlue";
+      showAlert("DARK MODE HAS BEEN ENABLED", "SUCCESS");
+    } else {
+      setmode("light");
+      document.body.style.backgroundColor = "white";
+      showAlert("LIGHT MODE HAS BEEN ENABLED", "SUCCESS");
+    }
+  };
+  const togglegreen = () => {
+    if (
+      document.body.style.backgroundColor === "#003333" ||
+      document.body.style.backgroundColor === "#33001a" ||
+      document.body.style.backgroundColor === "#000033"
+    ) {
+      setmode("light");
+    } else {
+      document.body.style.backgroundColor = "#003333";
+    }
+  };
+  const togglered = () => {
+    if (mode === "light" || mode === "dark") {
+      document.body.style.backgroundColor = "#33001a";
+    }
+  };
+  const toggleblue = () => {
+    if (mode === "light" || mode === "dark") {
+      document.body.style.backgroundColor = "#000033";
+    }
+  };
+
+  const showAlert = (message, type) => {
+    setalert({
+      msg: message,
+      type: type,
+    });
+
+    setTimeout(() => {
+      setalert(null);
+    }, 1500);
+  };
+
+  const [mode, setmode] = useState("light");
+  const [alert, setalert] = useState(null);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar
+        mode={mode}
+        togglemode={togglemode}
+        togglered={togglered}
+        toggleblue={toggleblue}
+        togglegreen={togglegreen}
+      />
+      <Alert alert={alert}></Alert>
+      <container>
+        <TextForm mode={mode} showAlert={showAlert} />
+      </container>
+    </>
   );
 }
 
